@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF 智能压缩 · zcagent(智策张翀)</title>
+<meta name="description" content="纯浏览器端 PDF 批量压缩工具:多选、文件夹递归、三档预设、ZIP 打包下载,文件不上传服务器。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%237c3aed'/%3E%3Ctext x='16' y='22' font-size='13' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'%3EPDF%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css?v=1024i">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">PDF</div>
+    <div class="brand-text">
+      <h1>PDF 智能压缩</h1>
+      <span class="tagline">批量压缩 · 本地处理 · 不上传服务器</span>
+    </div>
+  </div>
+  <div class="maker">zcagent<span class="maker-sub">智策张翀</span></div>
+</header>
+
+<main class="wrap">
+
+  <!-- 上传区 -->
+  <section id="dropzone" class="dropzone">
+    <div class="dz-inner">
+      <div class="dz-icon">📄</div>
+      <p class="dz-title">把 PDF 拖到这里</p>
+      <p class="dz-sub">支持多选文件、拖入文件夹自动递归读取</p>
+      <div class="dz-btns">
+        <button class="btn btn-primary" id="btnPickFile" type="button" onclick="document.getElementById('filePicker').click()">选择 PDF 文件</button>
+        <button class="btn btn-ghost" id="btnPickDir" type="button" onclick="document.getElementById('dirPicker').click()">选择文件夹</button>
+        <button class="btn btn-ghost" id="btnSample" type="button">试用示例</button>
+        <input type="file" id="filePicker" class="off-screen" accept=".pdf,application/pdf" multiple>
+        <input type="file" id="dirPicker" class="off-screen" webkitdirectory directory multiple>
+      </div>
+      <p class="dz-privacy">🔒 压缩全程在你的浏览器本地完成,文件不会上传到任何服务器</p>
+    </div>
+  </section>
+
+  <!-- 档位 -->
+  <section id="presetBar" class="preset-bar">
+    <div class="pills">
+      <button class="pill" data-preset="low">低 · 极限</button>
+      <button class="pill on" data-preset="mid">中 · 均衡</button>
+      <button class="pill" data-preset="high">高 · 高质量</button>
+    </div>
+    <p id="presetHint" class="preset-hint">150dpi,日常推荐,画质体积兼顾</p>
+  </section>
+
+  <!-- 操作与进度 -->
+  <section class="action-bar">
+    <div class="actions">
+      <button class="btn btn-primary" id="btnStart" disabled>开始压缩</button>
+      <button class="btn btn-zip" id="btnZip" disabled>下载全部 (ZIP)</button>
+      <button class="btn btn-ghost" id="btnClear" disabled>清空列表</button>
+    </div>
+    <div class="count">共 <b id="fileCount">0</b> 个文件</div>
+  </section>
+
+  <div id="progressWrap" class="progress-wrap">
+    <div class="progress-text" id="progressText">已处理 0 / 0</div>
+    <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+  </div>
+
+  <!-- 文件列表 -->
+  <section class="list-card">
+    <div id="emptyTip" class="empty-tip">还没有文件,拖入 PDF 或点击上方按钮添加</div>
+    <div id="fileList"></div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="foot-brand">zcagent · 智策张翀</div>
+  <div class="foot-note">压缩引擎:Ghostscript(WASM 版,AGPL-3.0)· 所有文件仅在本地浏览器处理</div>
+</footer>
+
+<div id="toast" class="toast"></div>
+
+<!-- 调试面板:日志渲染在 DOM 里,线上可直接查看 -->
+<button id="btnDebug" class="debug-fab" title="调试日志">🐞</button>
+<div id="debugPanel" class="debug-panel" hidden>
+  <div class="debug-head">
+    <span>调试日志</span>
+    <span class="debug-actions">
+      <button id="btnCopyLog" type="button">复制</button>
+      <button id="btnCloseDebug" type="button">×</button>
+    </span>
+  </div>
+  <pre id="debugLog"></pre>
+</div>
+
+<script src="vendor/jszip/jszip.min.js"></script>
+<script src="vendor/pdf-lib/pdf-lib.min.js"></script>
+<script src="js/app.js?v=1024i" defer></script>
+</body>
+</html>
